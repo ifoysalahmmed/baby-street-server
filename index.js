@@ -39,28 +39,19 @@ async function run() {
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
 
-    const categoryCollection = client.db("babyStreet").collection("categories");
     const toyCollection = client.db("babyStreet").collection("toys");
 
-    // reading categories name
-    app.get("/category", async (req, res) => {
-      const result = await categoryCollection.find().toArray();
-      res.send(result);
-    });
-
-    // reading single category toys info
-    app.get("/category/:name", async (req, res) => {
-      const name = req.params.name;
-
-      const query = { sub_category: name };
-
-      const result = await toyCollection.find(query).toArray();
-      res.send(result);
-    });
-
     // reading toys info
-    app.get("/toys", async (req, res) => {
+    app.get("/allToys", async (req, res) => {
       const result = await toyCollection.find().toArray();
+      res.send(result);
+    });
+
+    // reading category wise toys info
+    app.get("/allToys/:category", async (req, res) => {
+      const filter = { sub_category: req.params.category };
+
+      const result = await toyCollection.find(filter).toArray();
       res.send(result);
     });
 
@@ -71,6 +62,14 @@ async function run() {
       const query = { _id: new ObjectId(id) };
 
       const result = await toyCollection.findOne(query);
+      res.send(result);
+    });
+
+    // inserting single toy info
+    app.put("/addToy", async (req, res) => {
+      const toy = req.body;
+
+      const result = await toyCollection.insertOne(toy);
       res.send(result);
     });
   } finally {
