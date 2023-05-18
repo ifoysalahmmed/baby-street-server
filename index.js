@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+require('dotenv').config()
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const app = express();
@@ -17,8 +18,7 @@ app.listen(port, () => {
   console.log(`Baby Street Server is Running on Port: ${port}`);
 });
 
-const uri =
-  "mongodb+srv://babyStreet:rL1olaV3vhj17ESr@cluster0.llwcx8n.mongodb.net/?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.llwcx8n.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
