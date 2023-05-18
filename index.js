@@ -48,6 +48,16 @@ async function run() {
       res.send(result);
     });
 
+    // reading single category toys info
+    app.get("/category/:name", async (req, res) => {
+      const name = req.params.name;
+      
+      const query = { sub_category: name };
+
+      const result = await toyCollection.find(query).toArray();
+      res.send(result);
+    });
+
     // reading toys info
     app.get("/toys", async (req, res) => {
       const result = await toyCollection.find().toArray();
