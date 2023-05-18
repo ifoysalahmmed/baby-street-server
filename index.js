@@ -40,10 +40,17 @@ async function run() {
     );
 
     const categoryCollection = client.db("babyStreet").collection("categories");
+    const toyCollection = client.db("babyStreet").collection("toys");
 
     // reading categories name
     app.get("/category", async (req, res) => {
       const result = await categoryCollection.find().toArray();
+      res.send(result);
+    });
+
+    // reading toys info
+    app.get("/toys", async (req, res) => {
+      const result = await toyCollection.find().toArray();
       res.send(result);
     });
   } finally {
