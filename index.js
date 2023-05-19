@@ -45,15 +45,10 @@ async function run() {
     app.get("/allToys", async (req, res) => {
       const limit = parseInt(req.query.limit);
       if (limit === 20) {
-        const result = await toyCollection
-          .find()
-          .sort({ name: 1 })
-          .limit(limit)
-          .toArray();
-
+        const result = await toyCollection.find().limit(limit).toArray();
         res.send(result);
       } else {
-        const result = await toyCollection.find().sort({ name: 1 }).toArray();
+        const result = await toyCollection.find().toArray();
         res.send(result);
       }
     });
