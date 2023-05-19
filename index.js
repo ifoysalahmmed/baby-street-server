@@ -71,13 +71,23 @@ async function run() {
       res.send(result);
     });
 
-    // implement search by toy name
+    // implemented search by toy name
     app.get("/getToysByName/:name", async (req, res) => {
       const name = req.params.name;
 
       const query = { name: { $regex: name, $options: "i" } };
 
       const result = await toyCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    // categorized by seller email
+    app.get("/myToys/:email", async (req, res) => {
+      // const query = { seller_email: req.params.email };
+
+      const result = await toyCollection
+        .find({ seller_email: req.params.email })
+        .toArray();
       res.send(result);
     });
 
