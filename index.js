@@ -49,7 +49,7 @@ async function run() {
 
     // reading toys info
     app.get("/allToys", async (req, res) => {
-      const result = await toyCollection.find().toArray();
+      const result = await toyCollection.find().sort({ name: 1 }).toArray();
       res.send(result);
     });
 
@@ -87,15 +87,35 @@ async function run() {
 
       const result = await toyCollection
         .find({ seller_email: req.params.email })
+        .sort({ name: 1 })
         .toArray();
       res.send(result);
     });
 
     // inserting single toy info
-    app.put("/addToy", async (req, res) => {
+    app.post("/addToy", async (req, res) => {
       const toy = req.body;
 
       const result = await toyCollection.insertOne(toy);
+      res.send(result);
+    });
+
+    // updating single toy info
+    app.put("/myToys/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedToy = req.body;
+
+      const filter = { _id: new ObjectId(id) };
+
+      const updateDoc = {
+        $set: {
+          price: updatedToy.price,
+          quantity: updatedToy.quantity,
+          description: updatedToy.description,
+        },
+      };
+
+      const result = await toyCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
 
