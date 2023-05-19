@@ -39,12 +39,6 @@ async function run() {
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
 
-    // const indexKeys = { name: 1 };
-    // const indexOptions = { name: "titleCategory" };
-    // const result = await jobsCollection.createIndex(indexKeys, indexOptions);
-
-    // console.log(result);
-
     const toyCollection = client.db("babyStreet").collection("toys");
 
     // reading toys info
