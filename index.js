@@ -44,13 +44,15 @@ async function run() {
     // reading toys info
     app.get("/allToys", async (req, res) => {
       const limit = parseInt(req.query.limit);
-      if (limit === 20) {
-        const result = await toyCollection.find().limit(limit).toArray();
-        res.send(result);
-      } else {
-        const result = await toyCollection.find().toArray();
-        res.send(result);
-      }
+      const sort = req.query.sort == "Ascending" ? 1 : -1;
+
+      const result = await toyCollection
+        .find()
+        .limit(limit)
+        .sort({ price: sort })
+        .toArray();
+
+      res.send(result);
     });
 
     // reading category wise toys info
@@ -83,11 +85,9 @@ async function run() {
 
     // categorized by seller email
     app.get("/myToys/:email", async (req, res) => {
-      // const query = { seller_email: req.params.email };
-
       const result = await toyCollection
         .find({ seller_email: req.params.email })
-        .sort({ name: 1 })
+        .sort({ price: 1 })
         .toArray();
       res.send(result);
     });
